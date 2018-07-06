@@ -35,5 +35,5 @@ def get_ip():
         private IP address
     """
     import socket
-    ip = socket.gethostbyname(socket.gethostname())
-    return ip
+    return socket.gethostbyname(socket.gethostname())
+
