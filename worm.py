@@ -101,7 +101,7 @@ def download_ssh_passwords(filename):
 
 
 def connect_to_ftp(host, username, password):
-    # TODO : Finish this function + Add scanning and bruteforcing
+    # TODO : Finish this function + Add bruteforcing
     try:
         ftp = FTP(host)
         ftp.login(username, password)
@@ -160,5 +160,3 @@ def bruteforce_ssh(host, wordlist):
         print(connection)
         time.sleep(5)
 
-
-get_private_ip()
