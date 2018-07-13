@@ -5,4 +5,8 @@
 
 > Python network worm that spreads on the local network and gives the attacker control of these machines.
 ## STATUS: IN DEVELOPMENT
-More content coming up!
+Available functions at the moment:
+> ssh bruteforcing
+> drive spreading
+> scanning for machines with port 21 or 22
+> simple ftp connection ( bruteforcing will come soon )
