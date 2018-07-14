@@ -7,6 +7,12 @@
 ## STATUS: IN DEVELOPMENT
 Available functions at the moment:
 > ssh bruteforcing
+
 > drive spreading
+
 > scanning for machines with port 21 or 22
+
 > simple ftp connection ( bruteforcing will come soon )
+
+
+ToDo: dropping a backdoor....
