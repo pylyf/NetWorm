@@ -1,26 +1,38 @@
 # NetWorm
-[![MIT Licence](https://badges.frapsoft.com/os/mit/mit-150x33.png?v=103)](https://opensource.org/licenses/mit-license.php)
-
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
 > Python network worm that spreads on the local network and gives the attacker control of these machines.
-## STATUS: IN DEVELOPMENT
-Available functions at the moment:
-> ssh bruteforcing
 
-> drive spreading
+## Executing
 
-> scanning for machines with port 21 or 22
+Windows & Linux:
 
-> simple ftp connection ( bruteforcing will come soon )
+```
+python worm.py
+```
 
-
-ToDo: dropping a backdoor....
+## Screenshots
+![bruteforcing local machines](https://github.com/pylyf/NetWorm/blob/master/screenshots/pic1.PNG)
+_Bruteforcing local machines with port 22 open._
 
 ## Donation
-If you like my content consider buying me a coffee.
+If you like my content consider buying me a coffee. *( No coffees included, just a small donation.. :D )*
 
 <a href="https://www.buymeacoffee.com/9gwHLnDTs" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+
+## Meta
+
+[https://github.com/pylyf/NetWorm](https://github.com/pylyf/NetWorm)
+
+Distributed under the MIT license. 
+
+## Contributing
+
+1. Fork it (<https://github.com/pylyf/NetWorm/fork>)
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
 
 ## Legal Advice
 THIS REPOSITORY AND EVERY SCRIPT INCLUDED IN IT IS FOR EDUCATIONAL 
