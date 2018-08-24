@@ -3,6 +3,10 @@
 
 > Python network worm that spreads on the local network and gives the attacker control of these machines.
 
+This code is not finished and works more like a "worm template" for you to get inspiration at the moment. 
+
+You can bruteforce ssh servers, spread with USBs, etc..
+
 ## Executing
 
 Windows & Linux:
