@@ -27,7 +27,7 @@ python worm.py
 
 ## Compilation (.exe)
 
-Targeted machines won´t probably have python and the required libraries instead. 
+Targeted machines won´t probably have python and the required libraries installed. 
 To run this code on other machines, you need to convert it into an executable.
 
 I recommend the ![https://www.pyinstaller.org/](Pyinstaller library).
