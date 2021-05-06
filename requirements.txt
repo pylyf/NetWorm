@@ -1,0 +1,7 @@
+nmap
+paramiko
+urllib
+ftlib
+pywin32
+netifaces
+

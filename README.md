@@ -7,6 +7,16 @@ This code is not finished and works more like a "worm template" for you to get i
 
 You can bruteforce ssh servers, spread with USBs, etc..
 
+## Screenshots
+![bruteforcing local machines](https://github.com/pylyf/NetWorm/blob/master/screenshots/pic1.PNG)
+_Bruteforcing local machines with port 22 open._
+
+## Downloading necessary libraries
+
+```
+pip install -r requirements.txt
+```
+
 ## Executing
 
 Windows & Linux:
@@ -15,9 +25,21 @@ Windows & Linux:
 python worm.py
 ```
 
-## Screenshots
-![bruteforcing local machines](https://github.com/pylyf/NetWorm/blob/master/screenshots/pic1.PNG)
-_Bruteforcing local machines with port 22 open._
+## Compilation (.exe)
+
+Targeted machines won´t probably have python and the required libraries instead. 
+To run this code on other machines, you need to convert it into an executable.
+
+I recommend the ![https://www.pyinstaller.org/](Pyinstaller library).
+
+To use it, simply write these commands in your terminal:
+```
+pip install pyinstaller
+
+pyinstaller worm.py
+```
+
+
 
 ## Meta
 
@@ -34,6 +56,6 @@ Distributed under the MIT license.
 5. Create a new Pull Request
 
 ## Legal Advice
-THIS REPOSITORY AND EVERY SCRIPT INCLUDED IN IT IS FOR EDUCATIONAL 
-AND TESTING PURPOSES ONLY. THE OWNER NOR ANY CONTRIBUTOR IS NOT RESPONSIBLE
-FOR YOUR ACTIONS.
+This repository and every script included in it is for educational and testing purposes only.
+The owner nor any contributor is not responsible for your actions.
+
