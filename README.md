@@ -9,6 +9,7 @@ You can bruteforce ssh servers, spread with USBs, etc..
 
 ## Screenshots
 ![bruteforcing local machines](https://github.com/pylyf/NetWorm/blob/master/screenshots/pic1.PNG)
+
 _Bruteforcing local machines with port 22 open._
 
 ## Downloading necessary libraries
@@ -30,7 +31,7 @@ python worm.py
 Targeted machines won´t probably have python and the required libraries installed. 
 To run this code on other machines, you need to convert it into an executable.
 
-I recommend the ![https://www.pyinstaller.org/](Pyinstaller library).
+I recommend the [Pyinstaller library](https://www.pyinstaller.org/).
 
 To use it, simply write these commands in your terminal:
 ```
