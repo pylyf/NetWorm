@@ -1,4 +1,4 @@
-nmap
+python-nmap
 paramiko
 urllib
 ftlib
