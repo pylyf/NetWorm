@@ -36,7 +36,7 @@ gateway = gws['default'][netifaces.AF_INET][0]
 def scan_hosts(port):
     """
     Scans all machines on the same network that
-     have SSH (port 22) enabled
+     have the specified port enabled 
     Returns:
         IP addresses of hosts
     """
